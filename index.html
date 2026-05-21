@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SC Login</title>
+<link rel="stylesheet" href="sc-style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="js/sc-config.js"></script>
+<script src="js/supabase.js"></script>
+</head>
+
+<body data-allow-guest="true">
+
+<main class="sc-login-page">
+  <section class="login-grid">
+    <article class="form-card">
+      <div class="login-brand">
+        <div class="logo-link">
+          <img class="login-logo" src="https://pub-431a1eccf270455a99eab6163255ef53.r2.dev/logo/GoldenEraMotors.png" alt="Golden Era Motors" onerror="this.onerror=null;this.src='logo/GoldenEraMotors.png';">
+        </div>
+        <p class="login-subtitle">Sister Company Portal</p>
+        <p>Secure access for sister company personnel.</p>
+      </div>
+      <h2>SC Login</h2>
+      <p class="subhead">Register your store before placing orders, or continue as a guest to browse the catalog.</p>
+      <form id="scLoginForm" autocomplete="on">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" required>
+
+        <label for="loginPassword">Password</label>
+        <div class="password-field">
+          <input type="password" id="loginPassword" required>
+          <button type="button" id="togglePassword" aria-label="Show password" aria-pressed="false">
+            <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M1.5 12s3.5-6.5 10.5-6.5S22.5 12 22.5 12 19 18.5 12 18.5 1.5 12 1.5 12Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            </svg>
+            <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 3l18 18M4.5 5.6C2.8 7 1.5 9 1.5 12c0 0 3.5 6.5 10.5 6.5 2.4 0 4.4-.6 6.1-1.5M9.6 9.7a3.2 3.2 0 014.7 4.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9.9 14.1a3.2 3.2 0 01-.6-3.1M14.7 9.9c.3.6.4 1.3.3 2M8 16c1.2.9 2.6 1.5 4 1.5 6.9 0 10.5-5.5 10.5-5.5a12 12 0 00-2.4-3.1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <p id="loginMessage" class="form-message" aria-live="polite"></p>
+
+        <button type="submit">Login</button>
+        <button type="button" id="guestLoginBtn" class="sc-btn sc-btn-ghost" style="width: 100%; margin-top: 0.5rem;">Continue as Guest</button>
+      </form>
+      <a class="secondary-link" href="sc-register.html">Not registered? Create an account</a>
+    </article>
+
+    <aside class="info-card">
+      <div class="info-header">
+        <p class="eyebrow">Quick note</p>
+        <h3>Need to register personnel first?</h3>
+      </div>
+      <p>Before ordering, add your sister company team with the Store Name, Address, Contact Number, Terms, Credit Amount, and Assigned Personnel details. Once registered, you can browse the catalog and manage orders.</p>
+      <ul class="info-list">
+        <li>Secure credentials reset on first login.</li>
+        <li>Separate dashboards track ongoing orders and authorizations.</li>
+        <li>Use the portal to review product catalogs just like the main storefront.</li>
+      </ul>
+      <p class="info-footnote">Need help? Reach out to your Golden Era Motors rep for provisioning.</p>
+    </aside>
+  </section>
+</main>
+
+<script src="sc-guard.js"></script>
+<script src="sc-auth.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sister Company Registration</title>
+<link rel="stylesheet" href="sc-style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="js/sc-config.js"></script>
+<script src="js/supabase.js"></script>
+</head>
+
+<body class="sc-products-body" data-allow-guest="true">
+
+<header class="sc-products-header">
+  <div class="sc-header-brand">
+    <div class="sc-brand-stack">
+      <a class="sc-header-logo-link" href="sc-dashboard.html" aria-label="Go to dashboard">
+        <img class="sc-header-logo" src="https://pub-431a1eccf270455a99eab6163255ef53.r2.dev/logo/GoldenEraMotors.png" alt="Golden Era Motors" onerror="this.onerror=null;this.src='logo/GoldenEraMotors.png';">
+      </a>
+      <p class="sc-header-subtitle">Sister Company Portal</p>
+    </div>
+  </div>
+
+  <nav class="sc-products-nav">
+    <a href="sc-dashboard.html" aria-label="Dashboard">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M3 10.5 12 3l9 7.5v8.5a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+    <a href="sc-products.html" aria-label="Products">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <rect x="3" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <rect x="14" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <rect x="3" y="14" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <rect x="14" y="14" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+      </span>
+      <span class="nav-label">Products</span>
+    </a>
+    <a href="sc-cart.html" aria-label="Cart">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M6 6h15l-1.6 5.7a2 2 0 0 1-1.9 1.3H8.2a2 2 0 0 1-1.9-1.4L5 3H2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9" cy="19" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="18" cy="19" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+      </span>
+      <span class="nav-label">Cart</span>
+    </a>
+    <a href="sc-orders.html" aria-label="Orders">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="nav-label">Orders</span>
+    </a>
+    <a href="sc-register.html" class="active" aria-label="Account">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M12 12a4 4 0 1 0-0.001-8.001A4 4 0 0 0 12 12Zm-7 8.5a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="nav-label">Account</span>
+    </a>
+    <a href="sc-logout.html" data-logout aria-label="Logout">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M15 12H3M11 8l4 4-4 4M21 4v16a1 1 0 0 1-1 1h-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="nav-label">Logout</span>
+    </a>
+    <div class="sc-header-store" aria-live="polite">
+      <span class="sc-header-store-label">Logged on</span>
+      <span class="sc-header-store-name" id="scHeaderStoreName">-</span>
+    </div>
+  </nav>
+</header>
+
+<main class="sc-products-page sc-register-page">
+  <!-- Progress Indicator -->
+  <div class="registration-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-steps">
+      <span class="step active" data-step="1">Store Info</span>
+      <span class="step" data-step="2">Approvers</span>
+      <span class="step" data-step="3">Review</span>
+    </div>
+  </div>
+
+  <form id="scRegisterForm" class="registration-form" novalidate>
+    <!-- Step 1: Store Information -->
+    <div class="registration-step active" data-step="1">
+      <section class="form-card">
+        <div class="form-header">
+          <h2>Store Information</h2>
+          <p class="subhead">Tell us about your business to get started</p>
+        </div>
+
+        <div class="sc-form-grid">
+          <div class="sc-field">
+            <label for="storeName">Store Name <span class="required">*</span></label>
+            <input type="text" id="storeName" autocomplete="organization" required maxlength="100">
+            <div class="field-error" id="storeNameError"></div>
+          </div>
+
+          <div class="sc-field">
+            <label for="storeAddress">Store Address <span class="required">*</span></label>
+            <textarea id="storeAddress" autocomplete="street-address" required maxlength="255" rows="3"></textarea>
+            <div class="field-error" id="storeAddressError"></div>
+          </div>
+
+          <div class="sc-field">
+            <label for="contactNumber">Contact Number <span class="required">*</span></label>
+            <input type="tel" id="contactNumber" autocomplete="tel" required pattern="[0-9+\-\s\(\)]+" maxlength="20">
+            <div class="field-error" id="contactNumberError"></div>
+          </div>
+
+          <div class="sc-field">
+            <label for="personnel">Assigned Personnel <span class="required">*</span></label>
+            <input type="text" id="personnel" autocomplete="name" required maxlength="100">
+            <div class="field-error" id="personnelError"></div>
+          </div>
+
+          <div class="sc-field">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" autocomplete="email" required maxlength="255">
+            <div class="field-error" id="emailError"></div>
+          </div>
+
+          <div class="sc-field" id="passwordFieldWrap">
+            <label for="password">Password <span class="required">*</span></label>
+            <div class="password-field">
+              <input type="password" id="password" autocomplete="new-password" required minlength="8" maxlength="128">
+              <button type="button" id="togglePassword" aria-label="Toggle password visibility" aria-pressed="false">
+                <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="password-strength" id="passwordStrength"></div>
+            <div class="field-error" id="passwordError"></div>
+          </div>
+
+          <div class="sc-field">
+            <label for="creditAmount">Credit Limit</label>
+            <input type="number" id="creditAmount" inputmode="decimal" min="0" step="0.01" placeholder="0.00">
+            <div class="field-hint">Leave blank for default credit limit</div>
+          </div>
+
+          <div class="sc-field">
+            <label for="terms">Payment Terms</label>
+            <select id="terms">
+              <option value="COD">Cash on Delivery</option>
+              <option value="15 Days">15 Days</option>
+              <option value="30 Days">30 Days</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <button type="button" class="sc-btn sc-btn-ghost" id="backToLoginBtn">Back to Login</button>
+          <button type="button" class="sc-btn sc-btn-primary" id="nextToApprovers">Continue to Approvers</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Step 2: Approvers -->
+    <div class="registration-step" data-step="2">
+      <section class="info-card">
+        <div class="form-header">
+          <h2>Order Approvers</h2>
+          <p class="subhead">Add one or more approvers who will review and approve orders</p>
+        </div>
+
+        <div class="approver-actions">
+          <button type="button" class="sc-btn sc-btn-secondary sc-btn-emph" id="addRegistrationApproverBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; margin-right: 8px;">
+              <path d="M12 5v14M5 12h14"></path>
+            </svg>
+            Add Approver
+          </button>
+        </div>
+
+        <div id="registrationApproversList" class="approver-list" aria-live="polite">
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 48px; height: 48px; opacity: 0.5;">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <p>No approvers added yet. Click "Add Approver" to get started.</p>
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <button type="button" class="sc-btn sc-btn-ghost" id="backToStoreInfo">Back to Store Info</button>
+          <button type="button" class="sc-btn sc-btn-primary" id="nextToReview">Continue to Review</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Step 3: Review -->
+    <div class="registration-step" data-step="3">
+      <section class="form-card">
+        <div class="form-header">
+          <h2>Review & Submit</h2>
+          <p class="subhead">Please review your information before submitting</p>
+        </div>
+
+        <div class="review-section">
+          <h3>Store Information</h3>
+          <div class="review-grid" id="storeReview"></div>
+        </div>
+
+        <div class="review-section">
+          <h3>Order Approvers</h3>
+          <div id="approversReview" class="review-list"></div>
+        </div>
+
+        <div class="review-section">
+          <div class="terms-acceptance">
+            <label class="checkbox-label">
+              <input type="checkbox" id="termsAccepted" required>
+              <span class="checkmark"></span>
+              I agree to the <a href="#" class="sc-link">Terms of Service</a> and <a href="#" class="sc-link">Privacy Policy</a>
+            </label>
+            <div class="field-error" id="termsError"></div>
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <button type="button" class="sc-btn sc-btn-ghost" id="backToApprovers">Back to Approvers</button>
+          <button type="submit" class="sc-btn sc-btn-primary" id="submitRegistration">
+            <span class="btn-text">Create Account</span>
+            <div class="btn-spinner" style="display: none;">
+              <div class="spinner"></div>
+            </div>
+          </button>
+        </div>
+      </section>
+    </div>
+  </form>
+
+  <!-- View-Only Mode for Logged-In Users -->
+  <div id="scViewOnlyMode" class="view-only-container" style="display: none;">
+    <!-- Store Profile Section -->
+    <section class="profile-section">
+      <div class="profile-header">
+        <div class="profile-title">
+          <h1>Sister Company Profile</h1>
+          <p class="profile-subtitle">Manage your store information and approvers</p>
+        </div>
+        <button type="button" class="sc-btn sc-btn-secondary" id="storeEditBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; margin-right: 8px;">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          Edit Store Info
+        </button>
+      </div>
+
+      <div class="profile-grid">
+        <!-- Store Information Card -->
+        <div class="profile-card">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z"></path>
+                <path d="M8 5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2H8V5Z"></path>
+              </svg>
+            </div>
+            <h3>Store Information</h3>
+          </div>
+          <div class="card-content">
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Store Name</span>
+                <span class="info-value" id="viewStoreName">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Store Address</span>
+                <span class="info-value" id="viewStoreAddress">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Contact Number</span>
+                <span class="info-value" id="viewContactNumber">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Assigned Personnel</span>
+                <span class="info-value" id="viewPersonnel">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Email Address</span>
+                <span class="info-value" id="viewEmail">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Credit Limit</span>
+                <span class="info-value" id="viewCreditAmount">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Payment Terms</span>
+                <span class="info-value" id="viewTerms">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Approvers Card -->
+        <div class="profile-card">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 2l-4 4m0-4l4 4"></path>
+              </svg>
+            </div>
+            <div class="card-title-section">
+              <h3>Order Approvers</h3>
+              <p class="card-subtitle">Personnel authorized to approve orders</p>
+            </div>
+            <button type="button" class="sc-btn sc-btn-secondary sc-btn-sm" id="addApproverBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; margin-right: 6px;">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+              Add Approver
+            </button>
+          </div>
+          <div class="card-content">
+            <div id="viewApproversList" class="approvers-grid">
+              <!-- Approvers will be rendered here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="sc-approve-modal" id="storeEditModal" role="dialog" aria-modal="true" aria-labelledby="storeEditTitle">
+  <div class="sc-approve-modal-panel">
+    <div class="sc-approve-modal-header">
+      <h3 id="storeEditTitle">Update Store Info</h3>
+      <button type="button" class="sc-approve-modal-close" data-modal-close aria-label="Close update store modal">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <form id="storeEditForm" class="sc-approve-form">
+      <div class="sc-form-grid">
+        <div class="sc-field">
+          <label for="editStoreName">Store Name</label>
+          <input type="text" id="editStoreName" autocomplete="organization" required>
+        </div>
+        <div class="sc-field">
+          <label for="editStoreAddress">Store Address</label>
+          <input type="text" id="editStoreAddress" autocomplete="street-address" required>
+        </div>
+        <div class="sc-field">
+          <label for="editContactNumber">Contact Number</label>
+          <input type="text" id="editContactNumber" autocomplete="tel" required>
+        </div>
+        <div class="sc-field">
+          <label for="editPersonnel">Assigned Personnel</label>
+          <input type="text" id="editPersonnel" autocomplete="name" required>
+        </div>
+        <div class="sc-field">
+          <label for="editCreditAmount">Credit Amount</label>
+          <input type="number" id="editCreditAmount" inputmode="decimal" min="0" step="0.01">
+        </div>
+        <div class="sc-field">
+          <label for="editTerms">Terms</label>
+          <select id="editTerms">
+            <option value="COD">Cash on Delivery</option>
+            <option value="15 Days">15 Days</option>
+            <option value="30 Days">30 Days</option>
+          </select>
+        </div>
+        <div class="sc-field">
+          <label for="editEmail">Email</label>
+          <input type="email" id="editEmail" autocomplete="email" required>
+        </div>
+      </div>
+      <div class="sc-approve-modal-footer">
+        <button type="button" class="sc-btn sc-btn-ghost" data-modal-cancel>Cancel</button>
+        <button type="submit" class="sc-btn sc-btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="sc-approve-modal" id="approverModal" role="dialog" aria-modal="true" aria-labelledby="approverModalTitle">
+  <div class="sc-approve-modal-panel">
+    <div class="sc-approve-modal-header">
+      <h3 id="approverModalTitle">Approver Details</h3>
+      <button type="button" class="sc-approve-modal-close" data-modal-close aria-label="Close approver modal">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <form id="approverForm" class="sc-approve-form">
+      <div class="sc-form-grid">
+        <div class="sc-field">
+          <label for="approverFullName">Full Name</label>
+          <input type="text" id="approverFullName" autocomplete="name" required>
+        </div>
+        <div class="sc-field">
+          <label for="approverDesignation">Designation</label>
+          <input type="text" id="approverDesignation" autocomplete="organization-title" required>
+        </div>
+        <div class="sc-field">
+          <label for="approverUsername">Username</label>
+          <input type="text" id="approverUsername" autocomplete="username" required>
+        </div>
+        <div class="sc-field">
+          <label for="approverPassword">Password</label>
+          <input type="password" id="approverPassword" autocomplete="new-password" required>
+        </div>
+      </div>
+      <div class="sc-approve-modal-footer">
+        <button type="button" class="sc-btn sc-btn-ghost" data-modal-cancel>Cancel</button>
+        <button type="submit" class="sc-btn sc-btn-primary" id="approverSaveBtn">Save Approver</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="sc-approve-modal" id="deleteApproverModal" role="dialog" aria-modal="true" aria-labelledby="deleteApproverTitle">
+  <div class="sc-approve-modal-panel">
+    <div class="sc-approve-modal-header">
+      <h3 id="deleteApproverTitle">Remove Approver</h3>
+      <button type="button" class="sc-approve-modal-close" data-modal-close aria-label="Close remove modal">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="sc-approve-modal-body" style="padding: 1.5rem;">
+      <p id="deleteApproverMessage" style="margin: 0; color: #4b5563;">Are you sure you want to remove this approver?</p>
+    </div>
+    <div class="sc-approve-modal-footer">
+      <button type="button" class="sc-btn sc-btn-ghost" data-modal-cancel>Cancel</button>
+      <button type="button" class="sc-btn sc-btn-danger" id="confirmDeleteApproverBtn">Remove</button>
+    </div>
+  </div>
+</div>
+
+<script src="sc-guard.js"></script>
+<script src="sc-header.js"></script>
+<script src="sc-logout-confirm.js"></script>
+<script src="sc-auth.js"></script>
+
+</body>
+</html>

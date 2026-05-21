@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SC Dashboard | Golden Era Motors</title>
+
+<link rel="stylesheet" href="sc-style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="js/sc-config.js"></script>
+<script src="js/supabase.js"></script>
+
+</head>
+
+<body>
+
+<header class="sc-products-header">
+  <div class="sc-header-brand">
+    <div class="sc-brand-stack">
+      <a class="sc-header-logo-link" href="sc-dashboard.html" aria-label="Go to dashboard">
+        <img class="sc-header-logo" src="https://pub-431a1eccf270455a99eab6163255ef53.r2.dev/logo/GoldenEraMotors.png" alt="Golden Era Motors" onerror="this.onerror=null;this.src='logo/GoldenEraMotors.png';">
+      </a>
+      <p class="sc-header-subtitle">Sister Company Portal</p>
+    </div>
+  </div>
+
+  <nav class="sc-products-nav">
+    <a href="sc-dashboard.html" class="active" aria-label="Dashboard">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M3 10.5 12 3l9 7.5v8.5a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+    <a href="sc-products.html" aria-label="Products">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <rect x="3" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <rect x="14" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <rect x="3" y="14" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <rect x="14" y="14" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+      </span>
+      <span class="nav-label">Products</span>
+    </a>
+    <a href="sc-cart.html" aria-label="Cart">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M6 6h15l-1.6 5.7a2 2 0 0 1-1.9 1.3H8.2a2 2 0 0 1-1.9-1.4L5 3H2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9" cy="19" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="18" cy="19" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <span class="nav-badge" id="cartBadge"></span>
+      </span>
+      <span class="nav-label">Cart</span>
+    </a>
+    <a href="sc-orders.html" aria-label="Orders">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <span class="nav-badge" id="ordersBadge"></span>
+      </span>
+      <span class="nav-label">Orders</span>
+    </a>
+    <a href="sc-register.html" aria-label="Account">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M12 12a4 4 0 1 0-0.001-8.001A4 4 0 0 0 12 12Zm-7 8.5a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="nav-label">Account</span>
+    </a>
+    <a href="sc-logout.html" data-logout aria-label="Logout">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M15 12H3M11 8l4 4-4 4M21 4v16a1 1 0 0 1-1 1h-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="nav-label">Logout</span>
+    </a>
+    <div class="sc-header-store" aria-live="polite">
+      <span class="sc-header-store-label">Logged on</span>
+      <span class="sc-header-store-name" id="scHeaderStoreName">-</span>
+    </div>
+  </nav>
+</header>
+
+
+<div class="dashboard-container">
+
+<h2>Dashboard</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>Store Name</h3>
+<p id="storeName">-</p>
+</div>
+
+<div class="card">
+<h3>Credit Limit</h3>
+<p id="creditLimit">₱0.00</p>
+</div>
+
+<div class="card">
+<h3>Credit Used</h3>
+<p id="creditUsed">₱0.00</p>
+</div>
+
+<div class="card">
+<h3>Available Credit</h3>
+<p id="creditAvailable">₱0.00</p>
+</div>
+
+</div>
+
+
+<div class="quick-links">
+
+<a href="sc-products.html">Place Order</a>
+<a href="sc-cart.html">My Cart</a>
+<a href="sc-orders.html">Track Orders</a>
+
+</div>
+
+<h3>Product Offered</h3>
+
+<div class="dashboard-gallery" aria-label="Product offered categories">
+  <img src="https://pub-431a1eccf270455a99eab6163255ef53.r2.dev/car-parts/IMG_0001.png" alt="Product category Engine & Powertrain, Exhaust & Fuel System, Cooling & Lubrication" title="Engine & Powertrain" data-category="ENGINE & POWERTRAIN;EXHAUST & FUEL SYSTEM;COOLING & LUBRICATION" tabindex="0">
+  <img src="https://pub-431a1eccf270455a99eab6163255ef53.r2.dev/car-parts/IMG_0002.png" alt="Product category Braking System, Transmission & Drivetrain" title="Braking System" data-category="BRAKING SYSTEM;TRANSMISSION & DRIVETRAIN" tabindex="0">
+  <img src="https://pub-431a1eccf270455a99eab6163255ef53.r2.dev/car-parts/IMG_0003.png" alt="Product category Suspension & Steering" title="Suspension & Steering" data-category="SUSPENSION & STEERING" tabindex="0">
+  <img src="https://pub-431a1eccf270455a99eab6163255ef53.r2.dev/car-parts/IMG_0004.png" alt="Product category Electrical & Ignation" title="Electrical & Ignation" data-category="ELECTRICAL & IGNATION" tabindex="0">
+  <img src="https://pub-431a1eccf270455a99eab6163255ef53.r2.dev/car-parts/IMG_0005.png" alt="Product category Body & Interior" title="Body & Interior" data-category="BODY & INTERIOR" tabindex="0">
+  <img src="https://pub-431a1eccf270455a99eab6163255ef53.r2.dev/car-parts/IMG_0006.png" alt="Product category Servicing & Maintenance" title="Servicing & Maintenance" data-category="SERVICING & MAINTENANCE" tabindex="0">
+</div>
+
+
+<h3>Recent Orders</h3>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Order #</th>
+        <th>Date</th>
+        <th>Total</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="recentOrders"></tbody>
+  </table>
+</div>
+
+</div>
+
+<script src="sc-guard.js"></script>
+<script src="sc-header.js"></script>
+<script src="sc-logout-confirm.js"></script>
+<script>
+const connectGalleryCategoryLinks = () => {
+  const galleryImages = document.querySelectorAll('.dashboard-gallery img[data-category]');
+  galleryImages.forEach((image) => {
+    const category = String(image.dataset.category || "").trim();
+    if (!category) return;
+
+    const goToProducts = () => {
+      const params = new URLSearchParams({ category });
+      window.location.href = `sc-products.html?${params.toString()}`;
+    };
+
+    image.addEventListener('click', goToProducts);
+    image.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        goToProducts();
+      }
+    });
+  });
+};
+
+connectGalleryCategoryLinks();
+
+const formatCurrency = (value) => {
+    const num = Number(value);
+    if (!Number.isFinite(num)) return "₱0.00";
+    return `₱${num.toLocaleString("en-PH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+};
+
+const setText = (id, text) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+};
+
+const showFallbackOrders = () => {
+    const tableBody = document.getElementById("recentOrders");
+    if (!tableBody) return;
+    tableBody.innerHTML = "";
+    const row = tableBody.insertRow();
+    const cell = row.insertCell();
+    cell.colSpan = 4;
+    cell.textContent = "Connect Supabase to view orders.";
+    cell.style.textAlign = "center";
+    cell.style.padding = "2rem";
+};
+
+const populateFallbackDashboard = (user) => {
+    const creditLimit = Number(user.creditAmount) || 0;
+    setText("storeName", user.storeName || "Sister Company");
+    setText("creditLimit", formatCurrency(creditLimit));
+    setText("creditUsed", formatCurrency(0));
+    setText("creditAvailable", formatCurrency(creditLimit));
+    showFallbackOrders();
+};
+
+async function loadDashboard(){
+    let user;
+    try {
+        user = JSON.parse(localStorage.getItem("scUser"));
+    } catch (e) {
+        user = null;
+    }
+
+    if (!user) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const supabaseAvailable = typeof supabaseClient !== "undefined";
+    if (!supabaseAvailable || !user.store_id) {
+        populateFallbackDashboard(user);
+        return;
+    }
+
+    const { data: store, error: storeError } = await supabaseClient
+        .from("sc_stores")
+        .select("store_name, credit_limit, credit_used")
+        .eq("id", user.store_id)
+        .single();
+
+    if (storeError || !store) {
+        console.error("Error fetching store data:", storeError?.message);
+        setText("storeName", "Error");
+        return;
+    }
+
+    const creditLimit = Number(store.credit_limit) || 0;
+    const creditUsed = Number(store.credit_used) || 0;
+    const creditAvailable = creditLimit - creditUsed;
+
+    setText("storeName", store.store_name);
+    setText("creditLimit", formatCurrency(creditLimit));
+    setText("creditUsed", formatCurrency(creditUsed));
+    setText("creditAvailable", formatCurrency(creditAvailable));
+
+    const { data: orders, error: ordersError } = await supabaseClient
+        .from("sc_orders")
+        .select("id, created_at, order_total, status")
+        .eq("store_id", user.store_id)
+        .order("created_at", { ascending: false })
+        .limit(5);
+
+    if (ordersError) {
+        console.error("Error fetching recent orders:", ordersError.message);
+        return;
+    }
+
+    const tableBody = document.getElementById("recentOrders");
+    if (!tableBody) return;
+
+    tableBody.innerHTML = ""; // Clear previous content
+
+    if (!orders || orders.length === 0) {
+        const row = tableBody.insertRow();
+        const cell = row.insertCell();
+        cell.colSpan = 4;
+        cell.textContent = "No recent orders found.";
+        cell.style.textAlign = "center";
+        cell.style.padding = "2rem";
+        return;
+    }
+
+    orders.forEach(o => {
+        const row = tableBody.insertRow();
+        row.insertCell().textContent = o.id;
+        row.insertCell().textContent = new Date(o.created_at).toLocaleDateString('en-CA'); // YYYY-MM-DD
+        row.insertCell().textContent = formatCurrency(o.order_total);
+        row.insertCell().textContent = o.status;
+    });
+}
+
+loadDashboard()
+
+</script>
+
+</body>
+</html>

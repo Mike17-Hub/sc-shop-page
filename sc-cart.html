@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Cart | Golden Era Motors</title>
+
+  <link rel="stylesheet" href="sc-style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="js/sc-config.js"></script>
+  <script src="js/supabase.js"></script>
+</head>
+
+<body>
+  <header class="sc-products-header">
+    <div class="sc-header-brand">
+      <div class="sc-brand-stack">
+        <a class="sc-header-logo-link" href="sc-dashboard.html" aria-label="Go to dashboard">
+          <img class="sc-header-logo" src="https://pub-431a1eccf270455a99eab6163255ef53.r2.dev/logo/GoldenEraMotors.png" alt="Golden Era Motors" onerror="this.onerror=null;this.src='logo/GoldenEraMotors.png';">
+        </a>
+        <p class="sc-header-subtitle">Sister Company Portal</p>
+      </div>
+    </div>
+    <nav class="sc-products-nav">
+      <a href="sc-dashboard.html" aria-label="Dashboard">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M3 10.5 12 3l9 7.5v8.5a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a href="sc-products.html" aria-label="Products">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <rect x="3" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            <rect x="14" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            <rect x="3" y="14" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            <rect x="14" y="14" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <span class="nav-label">Products</span>
+      </a>
+      <a href="sc-cart.html" class="active" aria-label="Cart">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M6 6h15l-1.6 5.7a2 2 0 0 1-1.9 1.3H8.2a2 2 0 0 1-1.9-1.4L5 3H2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="9" cy="19" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            <circle cx="18" cy="19" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          </svg>
+          <span class="nav-badge" id="cartBadge"></span>
+        </span>
+        <span class="nav-label">Cart</span>
+      </a>
+      <a href="sc-orders.html" aria-label="Orders">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        <span class="nav-badge" id="ordersBadge"></span>
+        </span>
+        <span class="nav-label">Orders</span>
+      </a>
+      <a href="sc-register.html" aria-label="Account">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M12 12a4 4 0 1 0-0.001-8.001A4 4 0 0 0 12 12Zm-7 8.5a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="nav-label">Account</span>
+      </a>
+      <a href="sc-logout.html" data-logout aria-label="Logout">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M15 12H3M11 8l4 4-4 4M21 4v16a1 1 0 0 1-1 1h-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="nav-label">Logout</span>
+      </a>
+    <div class="sc-header-store" aria-live="polite">
+      <span class="sc-header-store-label">Logged on</span>
+      <span class="sc-header-store-name" id="scHeaderStoreName">-</span>
+    </div>
+    </nav>
+  </header>
+
+  <div class="container sc-cart-container">
+    <h2>My Cart</h2>
+
+    <div class="cart-actions">
+      <button id="removeSelectedBtn" class="sc-btn sc-btn-secondary" type="button">Remove selected</button>
+      <button id="clearCartBtn" class="sc-btn sc-btn-ghost" type="button">Clear cart</button>
+      <div class="cart-actions-spacer" aria-hidden="true"></div>
+      <button id="placeOrderBtn" class="sc-btn sc-btn-primary" type="button">Place order</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:48px;">
+              <input id="selectAllCart" type="checkbox" aria-label="Select all">
+            </th>
+            <th>Item Code</th>
+            <th>Item Name</th>
+            <th>Brand</th>
+            <th style="width:110px;">Qty</th>
+            <th style="width:140px;">Price</th>
+            <th style="width:160px;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody id="cartTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="cart-summary" aria-live="polite">
+      <div class="cart-summary-row">
+        <span>Selected items:</span>
+        <strong id="selectedCount">0</strong>
+      </div>
+      <div class="cart-summary-row">
+        <span>Total:</span>
+        <strong id="selectedTotal">PHP 0.00</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc-approve-modal" id="approverModal" aria-hidden="true">
+    <div class="sc-approve-modal-panel" role="dialog" aria-modal="true" aria-labelledby="approverModalTitle">
+      <div class="sc-approve-modal-header">
+        <h3 id="approverModalTitle">Approver required</h3>
+        <button type="button" class="sc-approve-modal-close" id="approverCloseBtn" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="sc-approve-modal-body">
+        <p class="subhead">Enter an approver (OIC) username and password to place this order.</p>
+
+        <form id="approverForm" class="sc-approve-form" autocomplete="off">
+          <div class="sc-field">
+            <label for="approverUsername">Username</label>
+            <input id="approverUsername" type="text" autocomplete="username" required>
+          </div>
+          <div class="sc-field">
+            <label for="approverPassword">Password</label>
+            <input id="approverPassword" type="password" autocomplete="current-password" required>
+          </div>
+          <p id="approverMessage" class="form-message" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <div class="sc-approve-modal-footer">
+        <button type="button" class="sc-btn sc-btn-ghost" id="approverCancelBtn">Cancel</button>
+        <button type="submit" form="approverForm" class="sc-btn sc-btn-primary" id="approverSubmitBtn">Approve &amp; Place</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="sc-guard.js"></script>
+  <script src="sc-header.js"></script>
+  <script src="sc-logout-confirm.js"></script>
+  <script src="sc-utils.js"></script>
+  <script src="sc-cart.js"></script>
+</body>
+</html>

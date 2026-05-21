@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logging out…</title>
+</head>
+<body>
+  <script src="sc-guard.js"></script>
+  <script>
+    try {
+      localStorage.removeItem("scUser");
+      localStorage.removeItem("scSession");
+      Object.keys(localStorage)
+        .filter((key) => key.startsWith("scCart:"))
+        .forEach((key) => localStorage.removeItem(key));
+    } catch (e) {}
+    window.location.href = "index.html";
+  </script>
+</body>
+</html>

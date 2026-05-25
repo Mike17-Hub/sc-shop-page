@@ -1894,6 +1894,62 @@
 
   const normalizeText = (value) => String(value || "").trim().toLowerCase();
 
+  const CATEGORY_SYNONYMS = new Map([
+    ["drivetrain", "powertrain"],
+    ["powertrain", "powertrain"],
+    ["braking", "brake"],
+    ["brake", "brake"],
+    ["clucth", "clutch"],
+    ["clutch", "clutch"],
+    ["ignation", "ignition"],
+    ["ignition", "ignition"],
+    ["servicing", "service"],
+    ["service", "service"],
+    ["electrical", "electrical"],
+    ["electronic", "electrical"],
+    ["engine", "engine"],
+    ["body", "body"],
+    ["interior", "interior"],
+    ["transmission", "transmission"],
+    ["suspension", "suspension"],
+    ["steering", "steering"],
+    ["maintenance", "maintenance"],
+    ["ignition", "ignition"],
+    ["drivetrain", "powertrain"]
+  ]);
+
+  const normalizeCategoryTerms = (value) =>
+    String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((token) => {
+        const simplified = token.endsWith("ing") ? token.slice(0, -3) : token;
+        return CATEGORY_SYNONYMS.get(simplified) || simplified;
+      });
+
+  const isCategoryMatch = (category, filter) => {
+    if (!category || !filter) return false;
+    if (category === filter) return true;
+    if (category.includes(filter) || filter.includes(category)) return true;
+
+    const categoryTerms = normalizeCategoryTerms(category);
+    const filterTerms = normalizeCategoryTerms(filter);
+    if (!categoryTerms.length || !filterTerms.length) return false;
+
+    const categoryHasAllFilterTokens = filterTerms.every((term) =>
+      categoryTerms.some((catTerm) => catTerm === term || catTerm.startsWith(term) || term.startsWith(catTerm))
+    );
+    if (categoryHasAllFilterTokens) return true;
+
+    const filterHasAllCategoryTokens = categoryTerms.every((term) =>
+      filterTerms.some((filterTerm) => filterTerm === term || filterTerm.startsWith(term) || term.startsWith(filterTerm))
+    );
+    return filterHasAllCategoryTokens;
+  };
+
   const urlCategoryFilters = [];
   let currentPage = 1;
   let pageSize = 50;
@@ -1963,12 +2019,12 @@
     urlCategoryFilters.length = 0;
     urlCategoryFilters.push(...categories);
 
-    const matchOption = Array.from(filters.category.options).find((option) =>
-      urlCategoryFilters.includes(normalizeText(option.value))
+    const matchingOption = Array.from(filters.category.options).find((option) =>
+      categories.some((filterValue) => isCategoryMatch(normalizeText(option.value), filterValue))
     );
 
-    if (matchOption) {
-      filters.category.value = matchOption.value;
+    if (matchingOption) {
+      filters.category.value = matchingOption.value;
     } else {
       filters.category.value = "";
     }
@@ -1998,8 +2054,14 @@
 
     const filtered = allProducts.filter((product) => {
       const normalizedCategory = normalizeText(product.category);
-      if (urlCategoryFilters.length && !urlCategoryFilters.includes(normalizedCategory)) return false;
-      if (!urlCategoryFilters.length && categoryValue && normalizedCategory !== categoryValue) return false;
+      if (urlCategoryFilters.length) {
+        const matches = urlCategoryFilters.some((filterValue) =>
+          isCategoryMatch(normalizedCategory, filterValue)
+        );
+        if (!matches) return false;
+      } else if (categoryValue && normalizedCategory !== categoryValue) {
+        return false;
+      }
       if (conditionValue && normalizeText(product.condition) !== conditionValue) return false;
       if (statusValue && normalizeText(product.status) !== statusValue) return false;
       if (brandValue && normalizeText(product.brand) !== brandValue) return false;

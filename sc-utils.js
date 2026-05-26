@@ -8,7 +8,33 @@
     }
   })();
 
-  const r2BaseUrl = storedR2BaseUrl || defaultR2BaseUrl;
+  const normalizeR2BaseUrl = (value, fallback = defaultR2BaseUrl) => {
+    const raw = String(value || "").trim();
+    if (!raw) return fallback;
+
+    const trimmed = raw.replace(/\/+$/, "");
+    const asUrl = (input) => {
+      try {
+        return new URL(input);
+      } catch {
+        return null;
+      }
+    };
+
+    const absolute = asUrl(trimmed);
+    if (absolute && (absolute.protocol === "http:" || absolute.protocol === "https:")) {
+      return absolute.origin;
+    }
+
+    const withScheme = asUrl(`https://${trimmed.replace(/^https?:\/\//, "")}`);
+    if (withScheme && (withScheme.protocol === "http:" || withScheme.protocol === "https:")) {
+      return withScheme.origin;
+    }
+
+    return fallback;
+  };
+
+  const r2BaseUrl = normalizeR2BaseUrl(storedR2BaseUrl, defaultR2BaseUrl);
 
   const placeholderSvg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640">
@@ -46,7 +72,7 @@
     },
 
     setR2BaseUrl: (nextUrl) => {
-      const normalized = String(nextUrl || "").trim();
+      const normalized = normalizeR2BaseUrl(nextUrl, "");
       try {
         if (!normalized) {
           localStorage.removeItem("scR2BaseUrl");

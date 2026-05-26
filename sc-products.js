@@ -1,6 +1,6 @@
 (() => {
   const defaultR2BaseUrl = "https://pub-431a1eccf270455a99eab6163255ef53.r2.dev";
-  const r2BaseUrl = window.scUtils?.r2BaseUrl || defaultR2BaseUrl;
+  const r2BaseUrl = String(window.scUtils?.r2BaseUrl || defaultR2BaseUrl).replace(/\/+$/, "");
   const placeholderImage = window.scUtils?.placeholderImage || `${r2BaseUrl}/empty-product.svg`;
   const r2ImageFiles = ["IMG_0001.png", "IMG_0002.png", "IMG_0003.png", "IMG_0004.png"];
   const cartToast = document.getElementById("cartToast");
@@ -420,9 +420,32 @@
   };
 
   const buildProductImageCandidates = (productCode, fileName) => {
-    const safeCode = encodeURIComponent(String(productCode || "").trim());
+    const rawCode = String(productCode || "").trim();
     const safeFile = String(fileName || "").trim();
-    if (!safeCode || !safeFile) return [placeholderImage];
+    if (!rawCode || !safeFile) return [placeholderImage];
+
+    const codeCandidates = (() => {
+      const variants = [];
+      const push = (value) => {
+        const next = String(value || "").trim();
+        if (!next) return;
+        const encoded = encodeURIComponent(next);
+        if (encoded) variants.push(encoded);
+      };
+
+      push(rawCode);
+      const upper = rawCode.toUpperCase();
+      if (upper !== rawCode) push(upper);
+
+      const compact = rawCode.replace(/\s+/g, "");
+      if (compact && compact !== rawCode) {
+        push(compact);
+        const compactUpper = compact.toUpperCase();
+        if (compactUpper !== compact) push(compactUpper);
+      }
+
+      return Array.from(new Set(variants)).filter(Boolean);
+    })();
 
     const normalizedFile = safeFile.replace(/^\/+/, "");
     const extMatch = normalizedFile.match(/\.([^.]+)$/);
@@ -446,9 +469,11 @@
     const candidates = [];
     for (const ext of extensions) {
       const file = `${baseName}.${ext}`;
-      candidates.push(`${r2BaseUrl}/${safeCode}/${file}`);
-      candidates.push(`${r2BaseUrl}/product-images/${safeCode}/${file}`);
-      candidates.push(`product-images/${safeCode}/${file}`);
+      for (const safeCode of codeCandidates) {
+        candidates.push(`${r2BaseUrl}/${safeCode}/${file}`);
+        candidates.push(`${r2BaseUrl}/product-images/${safeCode}/${file}`);
+        candidates.push(`product-images/${safeCode}/${file}`);
+      }
     }
     candidates.push(placeholderImage);
 

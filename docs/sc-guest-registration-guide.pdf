@@ -1,0 +1,150 @@
+%PDF-1.4
+%SC-Portal-Guide
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+3 0 obj
+<< /Type /Pages /Kids [ 5 0 R 7 0 R ] /Count 2 >>
+endobj
+4 0 obj
+<< /Length 3253 >>
+stream
+BT
+/F2 18 Tf
+1 0 0 1 54.00 728.00 Tm
+(Sister Company Portal - Quick Guide) Tj
+/F1 11 Tf
+1 0 0 1 54.00 704.00 Tm
+(Guest browsing and registration \(ordering\)) Tj
+/F1 9 Tf
+1 0 0 1 54.00 689.00 Tm
+(Generated: 2026-05-26) Tj
+/F2 13 Tf
+1 0 0 1 54.00 662.00 Tm
+(1\) Browse as Guest) Tj
+/F1 11 Tf
+1 0 0 1 54.00 644.00 Tm
+(From the SC Login page, click "Continue as Guest". You will be redirected to the Products) Tj
+1 0 0 1 54.00 629.00 Tm
+(page to browse the catalog.) Tj
+1 0 0 1 54.00 614.00 Tm
+(As Guest, you can:) Tj
+1 0 0 1 68.00 599.00 Tm
+(- Browse products and use search / category filters.) Tj
+1 0 0 1 68.00 584.00 Tm
+(- Open a product gallery to view images.) Tj
+1 0 0 1 68.00 569.00 Tm
+(- View the catalog list \(if available in your build\).) Tj
+1 0 0 1 54.00 554.00 Tm
+(As Guest, you cannot:) Tj
+1 0 0 1 68.00 539.00 Tm
+(- Place orders \(adding to cart will prompt you to register or log in\).) Tj
+1 0 0 1 68.00 524.00 Tm
+(- Use Cart/Orders features \(navigation links are hidden in guest mode\).) Tj
+/F2 13 Tf
+1 0 0 1 54.00 494.00 Tm
+(2\) Register when you want to order) Tj
+/F1 11 Tf
+1 0 0 1 54.00 476.00 Tm
+(You can register from the login page by clicking "Not registered? Create an account", or) Tj
+1 0 0 1 54.00 461.00 Tm
+(when prompted after trying to add to cart as a Guest.) Tj
+1 0 0 1 54.00 446.00 Tm
+(Registration steps:) Tj
+1 0 0 1 68.00 431.00 Tm
+(- Store Info: enter Store Name, Store Address, Contact Number, Assigned Personnel,) Tj
+1 0 0 1 68.00 416.00 Tm
+(Credit Amount, Terms, Email, and Password.) Tj
+1 0 0 1 68.00 401.00 Tm
+(- Approvers: add one or more approver \(OIC\) accounts. You will need an approver) Tj
+1 0 0 1 68.00 386.00 Tm
+(username and password when placing \(or cancelling\) orders.) Tj
+1 0 0 1 68.00 371.00 Tm
+(- Review: confirm details, then submit to complete registration.) Tj
+1 0 0 1 54.00 356.00 Tm
+(After successful registration, you will be redirected to the Dashboard and your account will) Tj
+1 0 0 1 54.00 341.00 Tm
+(be used for ordering.) Tj
+/F2 13 Tf
+1 0 0 1 54.00 311.00 Tm
+(3\) Place an order \(registered users\)) Tj
+/F1 11 Tf
+1 0 0 1 54.00 293.00 Tm
+(Once registered and logged in:) Tj
+1 0 0 1 68.00 278.00 Tm
+(- Go to Products, then click the cart button on an item to add it to your cart.) Tj
+1 0 0 1 68.00 263.00 Tm
+(- Open Cart, select items, and adjust quantities if needed.) Tj
+1 0 0 1 68.00 248.00 Tm
+(- Click "Place order". An Approver \(OIC\) will be required to approve and place the) Tj
+1 0 0 1 68.00 233.00 Tm
+(order.) Tj
+1 0 0 1 68.00 218.00 Tm
+(- After ordering, use Orders to track status and details.) Tj
+/F2 13 Tf
+1 0 0 1 54.00 188.00 Tm
+(4\) Log out / switch accounts) Tj
+/F1 11 Tf
+1 0 0 1 54.00 170.00 Tm
+(Use the "Logout" link in the header to end the current session.) Tj
+1 0 0 1 54.00 155.00 Tm
+(If you were browsing as Guest and want to order, register first, then log in using your) Tj
+1 0 0 1 54.00 140.00 Tm
+(registered email and password.) Tj
+/F2 13 Tf
+1 0 0 1 54.00 110.00 Tm
+(Need help?) Tj
+/F1 11 Tf
+1 0 0 1 54.00 92.00 Tm
+(If you are missing approver credentials or encounter access issues, contact your Golden Era) Tj
+/F1 9 Tf
+1 0 0 1 278.50 40.00 Tm
+(Page 1 of 2) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 3 0 R /MediaBox [0 0 612 792] /Resources << /ProcSet [/PDF /Text] /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 143 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 54.00 728.00 Tm
+(Motors representative for provisioning.) Tj
+/F1 9 Tf
+1 0 0 1 278.50 40.00 Tm
+(Page 2 of 2) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 3 0 R /MediaBox [0 0 612 792] /Resources << /ProcSet [/PDF /Text] /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Title (Sister Company Portal - Guest & Registration Guide) /Producer (Codex CLI) >>
+endobj
+9 0 obj
+<< /Type /Catalog /Pages 3 0 R >>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000028 00000 n 
+0000000101 00000 n 
+0000000179 00000 n 
+0000000247 00000 n 
+0000003556 00000 n 
+0000003717 00000 n 
+0000003915 00000 n 
+0000004076 00000 n 
+0000004182 00000 n 
+trailer
+<< /Size 10 /Root 9 0 R /Info 8 0 R >>
+startxref
+4234
+%%EOF

@@ -6,14 +6,16 @@ const initScAuth = () => {
 
   const getStored = (key) => {
     try {
-      return JSON.parse(localStorage.getItem(key) || "null");
+      const storage = key === "scUser" || key === "scSession" ? sessionStorage : localStorage;
+      return JSON.parse(storage.getItem(key) || "null");
     } catch {
       return null;
     }
   };
 
   const setStored = (key, value) => {
-    localStorage.setItem(key, JSON.stringify(value));
+    const storage = key === "scUser" || key === "scSession" ? sessionStorage : localStorage;
+    storage.setItem(key, JSON.stringify(value));
   };
 
   const getScUser = () => getStored("scUser");
@@ -42,7 +44,7 @@ const initScAuth = () => {
       password === defaultCredentials.password;
 
     if (matchesSaved || matchesDefault) {
-      localStorage.setItem(
+      sessionStorage.setItem(
         "scSession",
         JSON.stringify({ email, loggedAt: new Date().toISOString() })
       );
@@ -58,7 +60,7 @@ const initScAuth = () => {
             email,
             password
           };
-      localStorage.setItem("scUser", JSON.stringify(fallbackUser));
+      sessionStorage.setItem("scUser", JSON.stringify(fallbackUser));
       showLoginMessage("Login successful, redirecting...", "success");
       setTimeout(() => {
             window.location.href = "sc-dashboard.html"; // Assuming dashboard is the next page after login
@@ -139,8 +141,8 @@ const initScAuth = () => {
             }
           }
 
-          localStorage.setItem("scUser", JSON.stringify(userRow));
-          localStorage.setItem(
+          sessionStorage.setItem("scUser", JSON.stringify(userRow));
+          sessionStorage.setItem(
             "scSession",
             JSON.stringify({ email, loggedAt: new Date().toISOString() })
           );
@@ -1393,9 +1395,9 @@ const initScAuth = () => {
 
       try {
         if (typeof supabaseClient === "undefined") {
-          // Fallback to local storage
-          localStorage.setItem("scUser", JSON.stringify(data));
-          localStorage.setItem("scSession", JSON.stringify({ email: data.email, loggedAt: new Date().toISOString() }));
+          // Fallback to session-only auth when Supabase is unavailable
+          sessionStorage.setItem("scUser", JSON.stringify(data));
+          sessionStorage.setItem("scSession", JSON.stringify({ email: data.email, loggedAt: new Date().toISOString() }));
           alert("Registration saved locally (Supabase unavailable).");
           window.location.href = "sc-dashboard.html";
           return;
@@ -1442,8 +1444,8 @@ const initScAuth = () => {
           }
         }
 
-        localStorage.setItem("scUser", JSON.stringify(userRow));
-        localStorage.setItem("scSession", JSON.stringify({ email: data.email, loggedAt: new Date().toISOString() }));
+        sessionStorage.setItem("scUser", JSON.stringify(userRow));
+        sessionStorage.setItem("scSession", JSON.stringify({ email: data.email, loggedAt: new Date().toISOString() }));
 
         if (submitBtn) {
           submitBtn.innerHTML = '✓ Registration Complete!';

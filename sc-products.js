@@ -8,7 +8,7 @@
 
   const getScUser = () => {
     try {
-      return JSON.parse(localStorage.getItem("scUser") || "null");
+      return JSON.parse(sessionStorage.getItem("scUser") || "null");
     } catch {
       return null;
     }
@@ -132,7 +132,7 @@
 
   const getActiveStoreId = () => {
     try {
-      const user = JSON.parse(localStorage.getItem("scUser") || "null");
+      const user = JSON.parse(sessionStorage.getItem("scUser") || "null");
       return String(user?.store_id || "").trim() || "guest";
     } catch {
       return "guest";

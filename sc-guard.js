@@ -1,7 +1,8 @@
 (() => {
   const getStored = (key) => {
     try {
-      return JSON.parse(localStorage.getItem(key) || "null");
+      const storage = key === "scUser" || key === "scSession" ? sessionStorage : localStorage;
+      return JSON.parse(storage.getItem(key) || "null");
     } catch {
       return null;
     }

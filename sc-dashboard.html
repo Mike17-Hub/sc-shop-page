@@ -223,7 +223,7 @@ const populateFallbackDashboard = (user) => {
 async function loadDashboard(){
     let user;
     try {
-        user = JSON.parse(localStorage.getItem("scUser"));
+        user = JSON.parse(sessionStorage.getItem("scUser") || "null");
     } catch (e) {
         user = null;
     }

@@ -3,7 +3,7 @@
   if (nameEl) {
     let user = null;
     try {
-      user = JSON.parse(localStorage.getItem("scUser") || "null");
+      user = JSON.parse(sessionStorage.getItem("scUser") || "null");
     } catch {
       user = null;
     }
@@ -23,7 +23,7 @@
 
   const getScUser = () => {
     try {
-      return JSON.parse(localStorage.getItem("scUser") || "null");
+      return JSON.parse(sessionStorage.getItem("scUser") || "null");
     } catch {
       return null;
     }

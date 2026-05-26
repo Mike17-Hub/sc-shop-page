@@ -39,7 +39,7 @@
 
     getScUser: () => {
       try {
-        return JSON.parse(localStorage.getItem("scUser") || "null");
+        return JSON.parse(sessionStorage.getItem("scUser") || "null");
       } catch {
         return null;
       }
